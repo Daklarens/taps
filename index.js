@@ -15,7 +15,7 @@ const io = new Server(server, {
 });
 
 // Порт для запуска сервера
-const PORT = 3000;
+const PORT = 5555;
 
 // Хранилище данных пользователей
 let usersData = {};
