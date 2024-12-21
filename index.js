@@ -19,6 +19,7 @@ const PORT = 3000;
 
 // Хранилище данных пользователей
 let usersData = {};
+let onlineUsers = {};
 
 // Функция для получения топ-3 пользователей
 function getTopUsers() {
@@ -40,7 +41,8 @@ app.get("*", (req, res) => {
 // Обработка подключения пользователя
 io.on("connection", (socket) => {
   console.log("🔗 Новый пользователь подключился");
-
+  onlineUsers[socket.id] = true;
+  io.emit("updateOnline", Object.keys(onlineUsers).length);
   // Обработка события "click" от клиента
   socket.on("click", (data) => {
     const { userId, clicks, level } = data;
@@ -57,6 +59,10 @@ io.on("connection", (socket) => {
   // Обработка отключения пользователя
   socket.on("disconnect", () => {
     console.log(`❌ Пользователь отключился: ${socket.id}`);
+    delete onlineUsers[socket.id];
+
+    // Отправляем обновлённое количество онлайн-пользователей
+    io.emit("updateOnline", Object.keys(onlineUsers).length);
   });
 });
 
