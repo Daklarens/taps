@@ -28,7 +28,7 @@ function getTopUsers() {
   return Object.entries(usersData)
     .sort((a, b) => b[1].clicks - a[1].clicks) // Сортируем по количеству кликов
     .slice(0, 3) // Берем только топ-3
-    .map(([id, data]) => ({ id, clicks: data.clicks, level: data.level })); // Формируем массив данных
+    .map(([id, data]) => ({ id, clicks: data.clicks, photo: data.photo, name: data.name })); // Формируем массив данных
 }
 
 // Указываем путь к статическим файлам фронтенда (директория dist)
@@ -47,15 +47,15 @@ io.on("connection", (socket) => {
   io.emit("updateOnline", Object.keys(onlineUsers).length);
   // Обработка события "click" от клиента
   socket.on("click", (data) => {
-    const { userId, clicks, level } = data;
+    const { userId, clicks, photo, name } = data;
 
     // Обновляем данные пользователя
-    usersData[userId] = { clicks, level };
+    usersData[userId] = { clicks, photo, name };
 
     // Отправляем обновленный топ-3 всем клиентам
     io.emit("updateTop", { topUsers: getTopUsers() });
 
-    console.log(`📊 Данные от ${userId}: ${clicks} кликов, уровень: ${level}`);
+    console.log(`📊 Данные от ${userId}: ${clicks} кликов, Имя: ${name}`);
   });
 
   // Обработка отключения пользователя
