@@ -61,6 +61,7 @@ io.on("connection", (socket) => {
   // Обработка отключения пользователя
   socket.on("disconnect", () => {
     console.log(`❌ Пользователь отключился: ${socket.id}`);
+    console.log(onlineUsers[socket.id])
     delete onlineUsers[socket.id];
 
     // Отправляем обновлённое количество онлайн-пользователей
