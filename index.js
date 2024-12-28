@@ -7,9 +7,10 @@ const app = express();
 const server = http.createServer(app);
 
 // Создаем Socket.io с CORS для работы через Nginx
+//https://1223191-ce40147.tw1.ru/
 const io = new Server(server, {
   cors: {
-    origin: "https://1223191-ce40147.tw1.ru/", // Укажи свой домен
+    origin: "*", // Укажи свой домен
     methods: ["GET", "POST"],
   },
 });
